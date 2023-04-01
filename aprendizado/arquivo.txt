@@ -1,0 +1,4 @@
+express: serve para facilitar a criação de um servidor
+Sequelize: interliga o node com o mysql
+mysql: banco de dados onde os dados serão armazenados
+handlebars: um programa que dá mais funcionalidades ao html (repetições, condições, ou liga-lo junto com o mysql)
