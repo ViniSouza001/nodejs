@@ -12,7 +12,7 @@
 </div>
 <div>
     <img align="center" src="https://64.media.tumblr.com/ff2ec7a3596e6aa2abca06a04827dcf3/tumblr_pclhvhLxfk1xbwp7jo4_r1_400.gif" width="50px">
-    handlebars: um programa que dá mais funcionalidades ao html (repetições, condições, ou ligalo junto com o mysql)
+    handlebars: um programa que dá mais funcionalidades ao html (repetições, condições, ou ligá-lo junto com o mysql)
 </div>
 <div>
     <img align="center" src="https://64.media.tumblr.com/ff2ec7a3596e6aa2abca06a04827dcf3/tumblr_pclhvhLxfk1xbwp7jo4_r1_400.gif" width="50px">
