@@ -14,7 +14,7 @@ const mongoose = require('mongoose');
     // OBS
         /* 
         POR MOTIVOS DE ERRO, TIVE DE COLOCAR A URL DO MONGODB PARA "0.0.0.0"
-        CASO CONTRÁRIO, ELE NÃO FUNCIONOU
+        CASO CONTRÁRIO, ELE NÃO FUNCIONOU 
         */
 
 // Model - usuários
