@@ -2,7 +2,7 @@
     const express = require('express');
     const handlebars = require('express-handlebars');
     const bodyParser = require('body-parser');
-    const admin = require('./routes/admin')
+    const admin = require('./routes/admin.routes.js')
     const mongoose = require('mongoose')
     const app = express();
     const path = require('path');

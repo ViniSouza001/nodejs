@@ -17,7 +17,12 @@ router.get('/categorias', (req, res) => {
 });
 
 router.get('/categorias/add', (req, res) => {
-    res.render('admin/addcategorias');
+    Categoria.find().then(categorias => {
+        res.render('admin/addcategorias', {categorias: categorias})
+    }).catch(err => {
+        req.flash("error_msg", "There was an error listing the categories")
+        res.redirect('/admin')
+    })
 })
 
 router.post("/categorias/nova", (req, res) => {

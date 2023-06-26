@@ -43,7 +43,7 @@ npm install --save express-session
 
 <div>
 <img align="center" src="https://31.media.tumblr.com/47f1a3bd81e3e43231625ce2e642b8cf/tumblr_mld36ndcTV1r0siqvo1_r1_400.gif" width="100px">
-Um tipo de sessão que aparece apenas uma vez. Ele permite que os desenvolvedores enviem uma mensagem sempre que um usuário estiver sendo redirecionado para uma página da web especificada. Por exemplo uma mensagem de sucesso ao fazer login ou uma mensagem de senha inválida, etc...
+Um tipo de sessão que aparece apenas uma vez. Ele permite que os desenvolvedores enviem uma mensagem sempre que um usuário estiver sendo redirecionado para uma página da web especificada. Por exemplo uma mensagem de sucesso ao fazer login ou uma mensagem de senha inválida, etc... E quando a página é recarregada, a mensagem do flash some
 </div> 
 
 ```shell
