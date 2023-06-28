@@ -185,12 +185,12 @@ router.get("/postagens/edit/:id", (req, res) => {
 
     // fazendo duas pesquisas: uma das postagens...
     Postagem.findOne({ _id: req.params.id }).lean().then(postagem => {
-        
+
         // e quando ele achar, irá pesquisar as categorias criadas pelo usuário
         Categoria.find().lean().then(categorias => {
 
-            // só assim ele irá renderizar a página de formulário de alteração
-            res.render('admin/editPostagens', { postagem: postagem })
+            // só assim ele irá renderizar a página de formulário de alteração com os dados
+            res.render('admin/editPostagens', { postagem: postagem, categorias: categorias })
         }).catch(err => {
             req.flash("error_msg", "There was an error listing categories")
             res.redirect("/admin/postagens")
@@ -198,6 +198,43 @@ router.get("/postagens/edit/:id", (req, res) => {
 
     }).catch(err => {
         req.flash('error_msg', "This post doesn't exist!")
+        res.redirect("/admin/postagens")
+    })
+})
+
+router.post("/postagem/edit", (req, res) => {
+    Postagem.findOne({ _id: req.body.id }).then((postagem) => {
+        console.log(postagem)
+
+        // const { titulo, descricao, conteudo, categoria, slug } = req.body.
+        postagem.titulo = req.body.titulo
+        postagem.descricao = req.body.descricao
+        postagem.conteudo = req.body.conteudo
+        postagem.categoria = req.body.categoria
+        postagem.slug = req.body.slug
+
+        postagem.save().then(() => {
+            req.flash("success_msg", "Post updated successfully")
+            res.redirect("/admin/postagens")
+        }).catch((err) => {
+            req.flash("error_msg", "There was an error saving the post")
+            res.redirect("/admin/postagens")
+        })
+
+    }).catch(err => {
+        console.log(err);
+        req.flash("error_msg", "There was an error updating the post!")
+        res.redirect("/admin/postagens")
+    })
+})
+
+// não recomendável, pois é uma rota tipo GET
+router.get("/postagens/deletar/:id", (req, res) => {
+    Postagem.findByIdAndDelete({_id: req.params.id}).lean().then(() => {
+        req.flash("success_msg", "Post deleted successfully")
+        res.redirect('/admin/postagens')
+    }).catch(err => {
+        req.flash("error_msg", "There was an internal error to delete the post")
         res.redirect("/admin/postagens")
     })
 })
