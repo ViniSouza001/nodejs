@@ -1,16 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
-require('../models/Categoria')
+require('../models/Categoria') // model de categoria
 const Categoria = mongoose.model('categorias')
+require('../models/Postagens') // model de postagens
+const Postagem = mongoose.model('postagens')
+
+/** res.render: irá renderizar algum arquivo, então a construção dele é
+ *  res.render('(nome da pasta)/caminho/do/arquivo')
+ *  render não precisa de '/' antes de tudo
+ * 
+ *  res.redirect: irá jogar o usuário para outra página, então a construção fica
+ *  res.redirect('/(rota admin)/caminho/da/pagina')
+ *  redirect precisa de uma '/' antes de tudo
+ */
+
 
 router.get('/', (req, res) => {
     // o res.render já entende automaticamente que ele irá renderizar algum elemento na pasta 'views'
     res.render("admin/index")
-});
-
-router.get('/posts', (req, res) => {
-    res.send('Página de posts');
 });
 
 router.get('/categorias', (req, res) => {
@@ -100,10 +108,7 @@ router.post("/categorias/edit", (req, res) => {
             }).catch(err => {
                 req.flash("error_msg", "There was an error editing the category")
                 res.redirect("/admin/categorias")
-
             })
-
-
         }
     })
 })
@@ -118,7 +123,7 @@ router.get("/categorias/edit/:id", (req, res) => {
 })
 
 router.post("/categorias/deletar", (req, res) => {
-    Categoria.deleteOne({_id: req.body.id}).then(() => {
+    Categoria.deleteOne({ _id: req.body.id }).then(() => {
         req.flash("success_msg", "Category deleted successfully")
         res.redirect("/admin/categorias")
     }).catch((err) => {
@@ -129,15 +134,71 @@ router.post("/categorias/deletar", (req, res) => {
 })
 
 router.get("/postagens", (req, res) => {
-    res.render("admin/postagens")
+    Postagem.find().lean().populate("categoria").sort({ data: 'desc' }).then((postagens) => {
+        res.render("admin/postagens", { postagens: postagens })
+    }).catch((err) => {
+        req.flash("error_msg", "There was an error listing posts")
+        res.redirect('/admin')
+    })
 })
 
 router.get('/postagens/add', (req, res) => {
+    // ele irá pesquisar todas as categorias criadas pelo usuário para mostrar
     Categoria.find().lean().then(categorias => {
-        res.render("admin/addPostagem", {categorias: categorias})
+        res.render("admin/addPostagem", { categorias: categorias })
     }).catch(err => {
         req.flash("error_msg", "There was an error loading the form")
         res.redirect('/admin')
+    })
+})
+
+router.post("/postagens/nova", (req, res) => {
+    var erros = []
+
+    if (req.body.categoria == 0) {
+        erros.push({ texto: "Invalid category! Please, register a category" })
+    }
+
+    if (erros.length > 0) {
+        res.render('admin/addPostagem', { erros: erros })
+    } else {
+        const { titulo, descricao, conteudo, categoria, slug } = req.body
+        const novaPostagem = {
+            titulo: titulo,
+            descricao: descricao,
+            conteudo: conteudo,
+            categoria: categoria,
+            slug: slug
+        }
+
+        new Postagem(novaPostagem).save().then(() => {
+            req.flash("success_msg", "Post created successfully")
+            res.redirect('/admin/postagens')
+        }).catch((err) => {
+            req.flash("error_msg", "There was an error creating the post")
+            res.redirect('/admin/postagens')
+        })
+    }
+})
+
+router.get("/postagens/edit/:id", (req, res) => {
+
+    // fazendo duas pesquisas: uma das postagens...
+    Postagem.findOne({ _id: req.params.id }).lean().then(postagem => {
+        
+        // e quando ele achar, irá pesquisar as categorias criadas pelo usuário
+        Categoria.find().lean().then(categorias => {
+
+            // só assim ele irá renderizar a página de formulário de alteração
+            res.render('admin/editPostagens', { postagem: postagem })
+        }).catch(err => {
+            req.flash("error_msg", "There was an error listing categories")
+            res.redirect("/admin/postagens")
+        })
+
+    }).catch(err => {
+        req.flash('error_msg', "This post doesn't exist!")
+        res.redirect("/admin/postagens")
     })
 })
 
