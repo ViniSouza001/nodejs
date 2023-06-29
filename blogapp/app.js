@@ -9,6 +9,8 @@
     const session = require('express-session')
     const flash = require('connect-flash')
     require("./models/Postagens.js")
+    require('./models/Categoria.js')
+    const Categoria = mongoose.model("categorias")
     const Postagem = mongoose.model("postagens")
 
 // configurações
@@ -72,6 +74,36 @@
             }
         }).catch(err => {
             req.flash("error_msg", "There was an internal error")
+            res.redirect("/")
+        })
+    })
+
+    app.get("/categorias", (req, res) => {
+        Categoria.find().lean().then(categorias => {
+            res.render("categories/index", {categorias: categorias})
+        }).catch(err => {
+            req.flash("error_msg", "There was an internal error listing categories")
+            res.redirect("/")
+        })
+    })
+
+    app.get("/categorias/:slug", (req, res) => {
+        Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+            if(categoria) {
+
+                Postagem.find({categoria: categoria._id}).lean().then(postagens => {
+                    res.render("categories/postagens", {postagens: postagens, categoria: categoria})
+                }).catch(err => {
+                    req.flash("error_msg", "There was a error to list the posts")
+                    res.redirect("/")
+                })
+
+            } else {
+                req.flash("error_msg", "This category doesn't exists")
+                res.redirect("/")
+            }
+        }).catch(err => {
+            req.flash("error_msg", "There was an internal error loading page of this category")
             res.redirect("/")
         })
     })
