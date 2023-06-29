@@ -15,7 +15,6 @@ const Postagem = mongoose.model('postagens')
  *  redirect precisa de uma '/' antes de tudo
  */
 
-
 router.get('/', (req, res) => {
     // o res.render já entende automaticamente que ele irá renderizar algum elemento na pasta 'views'
     res.render("admin/index")
