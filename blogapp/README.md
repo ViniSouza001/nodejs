@@ -60,3 +60,20 @@ O bcrypt é um dos algoritmos mais seguros na atualidade, pois permite adicionar
 ```shell
 npm install --save bcryptjs
 ```
+<div>
+<img align="center" src="https://media.tenor.com/Df9PVmGjlrIAAAAj/minecraft-piglin.gif" width="40px">
+Passport é um framework extremamente flexível e modular. Com ele você consegue fazer diversos tipos de autenticação (mais de 500 tipos) tais como: Google, Facebook, Instagram, Twitter, Github, LinkedIn, etc...
+</div> 
+
+```shell
+npm install --save passport
+```
+
+<div>
+<img align="center" src="https://media.tenor.com/Df9PVmGjlrIAAAAj/minecraft-piglin.gif" width="40px">
+Junto com o passport, é necessário instalar a estratégia que você irá usar para a autenticação. No caso desse projeto usaremos a estratégia local, portanto segue o código abaixo.
+</div>
+
+```shell
+npm install --save passport-local
+```

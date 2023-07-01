@@ -10,6 +10,16 @@
 <body>
     {{>_navbar}}
     <div class="container mt-4">
+        {{#if error}}
+            <div class="alert alert-danger">{{error}}</div>
+        {{else}}
+        {{/if}}
+
+        {{#if loggedUser}}
+            <h3>Username: {{loggedUser.nome}}</h3>
+        {{else}}
+
+        {{/if}}
         {{>_msg}}
         {{{body}}}
     </div>

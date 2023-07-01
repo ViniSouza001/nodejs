@@ -13,20 +13,30 @@
     require('./models/Categoria.js')
     const Categoria = mongoose.model("categorias")
     const Postagem = mongoose.model("postagens")
+    const passport = require("passport")
+    require("./config/auth.js")(passport)
+    const { eAdmin } = require ("./helpers/admin.js")
 
 // configurações
     // sessão
+    // obs: essa ordem é muito importante
         app.use(session({
             secret: "cursoNode",
             resave: true,
             saveUninitialized: true
         }))
+
+        app.use(passport.initialize())
+        app.use(passport.session())
+
         app.use(flash())
     // Middleware
         app.use((req, res, next) => {
             // esse middleware irá criar duas variáveis globais: uma para mensagem de sucesso e outra para erro
             res.locals.success_msg = req.flash("success_msg")
             res.locals.error_msg = req.flash("error_msg")
+            res.locals.error = req.flash("error") // variável global só para o passport
+            res.locals.user = req.user || null
             next()
         })
     // body parser
@@ -53,10 +63,15 @@
     app.use('/admin', admin);
 
     app.get('/', (req, res) => {
+        const logged = {
+            nome: req.user.nome,
+            email: req.user.email,
+            eAdmin: req.user.admin
+        }
         Postagem.find().lean().populate("categoria").sort({data: "desc"}).then((postagens) => {
-            res.render("index", {postagens: postagens})
+            res.render("index", {postagens: postagens, loggedUser: logged})
         }).catch(err => {
-            req.flash("error_msg", "There was an internal error")
+            req.flash("error_msg", "Sorry, there was an internal error")
             res.redirect("/404")
         })
     })
