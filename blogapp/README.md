@@ -49,3 +49,14 @@ Um tipo de sessão que aparece apenas uma vez. Ele permite que os desenvolvedore
 ```shell
 npm install --save connect-flash
 ```
+
+<div>
+<img align="center" src="https://31.media.tumblr.com/47f1a3bd81e3e43231625ce2e642b8cf/tumblr_mld36ndcTV1r0siqvo1_r1_400.gif" width="100px">
+Módulo que serve para a encriptação de dados. Usando o bcryptjs, o dado passa a ser criptografado como hash.
+Hash é uma operação matemática que converte um arquivo de qualquer tamanho em um código de letras e números de tamanho fixo. Essa representação acaba sendo um tipo de "impressão digital" do arquivo.
+O bcrypt é um dos algoritmos mais seguros na atualidade, pois permite adicionar um código aleatório ao hash original, e também permite aumentar a dificuldade de decrifrar o hash por adicionar um salt.
+</div> 
+
+```shell
+npm install --save bcryptjs
+```

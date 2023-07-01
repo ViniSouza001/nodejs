@@ -3,6 +3,7 @@
     const handlebars = require('express-handlebars');
     const bodyParser = require('body-parser');
     const admin = require('./routes/admin.routes.js')
+    const usuarios = require("./routes/usuario.routes.js")
     const mongoose = require('mongoose')
     const app = express();
     const path = require('path');
@@ -88,7 +89,7 @@
     })
 
     app.get("/categorias/:slug", (req, res) => {
-        Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+        Categoria.findOne({slug: req.params.slug}).lean().then((categoria) => {
             if(categoria) {
 
                 Postagem.find({categoria: categoria._id}).lean().then(postagens => {
@@ -107,6 +108,8 @@
             res.redirect("/")
         })
     })
+
+    app.use("/usuarios", usuarios)
 // Outros
 const PORT = 8081;
 app.listen(PORT, () => {
